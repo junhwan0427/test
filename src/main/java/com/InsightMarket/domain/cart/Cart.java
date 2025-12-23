@@ -1,0 +1,28 @@
+package com.InsightMarket.domain.cart;
+
+import com.InsightMarket.domain.common.BaseEntity;
+import com.InsightMarket.domain.member.Member;
+import jakarta.persistence.*;
+import lombok.*;
+
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
+@Entity
+@Table(
+        name = "cart",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uk_cart_member", columnNames = "member_id")
+        }
+)
+public class Cart extends BaseEntity {
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cart_id")
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
+}
