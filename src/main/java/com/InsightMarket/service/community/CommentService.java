@@ -115,24 +115,64 @@ public class CommentService {
                 .build();
     }
 
-    public void update(Long brandId, Long boardId, Long commentId, CommentModifyDTO data, List<MultipartFile> files) {
+    @Transactional
+    public CommentResponseDTO update(
+            Long brandId,
+            Long boardId,
+            Long commentId,
+            CommentModifyDTO data,
+            List<MultipartFile> files
+    ) {
         log.info("[COMMENT][SVC][UPDATE] brandId={}, boardId={}, commentId={}, keepFileIds={}, newFiles={}",
                 brandId, boardId, commentId,
-                data.getKeepFileIds() == null ? 0 : data.getKeepFileIds().size(),
+                data.getKeepFileIds() == null ? "null" : data.getKeepFileIds().size(),
                 files == null ? 0 : files.size());
 
-        // TODO 1) comment 조회(board 스코프)
-        // TODO 2) 권한 체크(작성자 본인)
-        // TODO 3) content 수정
-        // TODO 4) 기존 Attachment 조회(targetType=COMMENT, targetId=commentId)
-        // TODO 5) keepFileIds 기준 유지/삭제(soft delete)
-        // TODO 6) 새 files 업로드 + Attachment 추가
+        Long writerId = 1L; // 테스트용
 
-        throw new UnsupportedOperationException("TODO");
+        // 1) board 스코프 확인
+        boardRepository.findByIdAndBrandIdAndDeletedAtIsNull(boardId, brandId)
+                .orElseThrow();
+
+        // 2) comment 조회
+        Comment comment = commentRepository.findByIdAndDeletedAtIsNull(commentId)
+                .orElseThrow();
+
+        // 3) 해당 board 소속인지 확인
+        if (!comment.getBoard().getId().equals(boardId)) {
+            throw new IllegalStateException("댓글이 해당 게시글에 속하지 않습니다.");
+        }
+
+        // 4) content 수정
+        comment.changeContent(data.getContent());
+
+        // 5) keepFileIds 기준 파일 정리 (null=유지, []=전부삭제, [ids]=일부유지)
+        fileService.cleanupFiles(FileTargetType.COMMENT, commentId, data.getKeepFileIds());
+
+        // 6) 새 파일 저장
+        fileService.saveFiles(FileTargetType.COMMENT, commentId, writerId, files);
+
+        // 7) 최종 파일 다시 조회해서 응답 구성
+        List<FileResponseDTO> currentFiles = fileService.getFiles(FileTargetType.COMMENT, commentId);
+
+        return CommentResponseDTO.builder()
+                .commentId(comment.getId())
+                .parentCommentId(comment.getParent() != null ? comment.getParent().getId() : null)
+                .boardId(boardId)
+                .content(comment.getContent())
+                .writerId(comment.getWriter().getId())
+                .files(currentFiles)
+                .createdAt(comment.getCreatedAt())
+                .replies(List.of()) // 단건 응답이므로 비움
+                .build();
     }
 
     @Transactional(readOnly = true)
-    public List<CommentResponseDTO> getCommentTree(Long boardId) {
+    public List<CommentResponseDTO> getCommentTree(Long brandId, Long boardId) {
+
+        // [기능] board 스코프 확인
+        boardRepository.findByIdAndBrandIdAndDeletedAtIsNull(boardId, brandId)
+                .orElseThrow();
 
         // 1️⃣ 부모 댓글
         List<Comment> parents =
@@ -170,17 +210,32 @@ public class CommentService {
             result.add(dto);
         }
 
-        return result;
+        return getCommentTree(boardId);
     }
 
+    @Transactional
     public void delete(Long brandId, Long boardId, Long commentId) {
-        log.info("[COMMENT][SVC][DELETE] brandId={}, boardId={}, commentId={}", brandId, boardId, commentId);
 
-        // TODO 1) comment 조회 + 권한 체크
-        // TODO 2) comment.softDelete()
-        // TODO 3) (옵션) attachments soft delete 정책
+        // 1) board 스코프 확인
+        boardRepository.findByIdAndBrandIdAndDeletedAtIsNull(boardId, brandId)
+                .orElseThrow();
 
-        throw new UnsupportedOperationException("TODO");
+        // 2) comment 조회
+        Comment comment = commentRepository.findByIdAndDeletedAtIsNull(commentId)
+                .orElseThrow();
+
+        // 3) board 소속 확인
+        if (!comment.getBoard().getId().equals(boardId)) {
+            throw new IllegalStateException("댓글이 해당 게시글에 속하지 않습니다.");
+        }
+
+        // 4) soft delete
+        comment.softDelete();
+        log.info("[COMMENT][SVC][DELETE] commentId={} softDeleted", commentId);
+
+        // 5) 파일 연쇄 soft delete (전부 삭제)
+        fileService.cleanupFiles(FileTargetType.COMMENT, commentId, List.of());
+        log.info("[COMMENT][SVC][DELETE] cascade files targetId={}", commentId);
     }
 
     private CommentResponseDTO toDTO(Comment c, Map<Long, List<FileResponseDTO>> fileMap) {
