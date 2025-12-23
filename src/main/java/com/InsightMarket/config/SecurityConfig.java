@@ -15,10 +15,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.InsightMarket.security.filter.JWTCheckFilter;
-import com.InsightMarket.security.handler.LoginFailHandler;
-import com.InsightMarket.security.handler.LoginSuccessHandler;
-import com.InsightMarket.security.handler.LoginAccessDeniedHandler;
+//import com.InsightMarket.security.filter.JWTCheckFilter;
+//import com.InsightMarket.security.handler.LoginFailHandler;
+//import com.InsightMarket.security.handler.LoginSuccessHandler;
+//import com.InsightMarket.security.handler.LoginAccessDeniedHandler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -53,15 +53,15 @@ public class SecurityConfig {
 
         http.formLogin(config -> {
             config.loginPage("/member/login");
-            config.successHandler(new LoginSuccessHandler());
-            config.failureHandler(new LoginFailHandler());
+//            config.successHandler(new LoginSuccessHandler());
+//            config.failureHandler(new LoginFailHandler());
         });
 
         // http.addFilterBefore(new JWTCheckFilter(), UsernamePasswordAuthenticationFilter.class); // JWT 체크
 
         // 인증은 됐는데 권한이 없을 때 실행되는 핸들러, @PreAuthorize("hasRole('ADMIN')") 로 설정된 주소에 'user' 가 접근 시 발생
         http.exceptionHandling(config -> {
-            config.accessDeniedHandler(new LoginAccessDeniedHandler());
+//            config.accessDeniedHandler(new LoginAccessDeniedHandler());
         });
         return http.build();
     }

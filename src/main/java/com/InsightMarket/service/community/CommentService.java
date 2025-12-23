@@ -210,7 +210,7 @@ public class CommentService {
             result.add(dto);
         }
 
-        return getCommentTree(boardId);
+        return result;
     }
 
     @Transactional
