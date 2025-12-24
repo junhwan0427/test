@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.InsightMarket.repository.MemberRepositoryTests" tests="2" skipped="0" failures="1" errors="0" timestamp="2025-12-24T05:25:59.611Z" hostname="502-18" time="1.815">
+  <properties/>
+  <testcase name="testRead()" classname="com.InsightMarket.repository.MemberRepositoryTests" time="0.83">
+    <failure message="org.springframework.security.core.userdetails.UsernameNotFoundException: Not Found: user9@aaa.com" type="org.springframework.security.core.userdetails.UsernameNotFoundException">org.springframework.security.core.userdetails.UsernameNotFoundException: Not Found: user9@aaa.com
+	at app//com.InsightMarket.repository.MemberRepositoryTests.lambda$testRead$0(MemberRepositoryTests.java:54)
+	at java.base@21.0.8/java.util.Optional.orElseThrow(Optional.java:403)
+	at app//com.InsightMarket.repository.MemberRepositoryTests.testRead(MemberRepositoryTests.java:53)
+	at java.base@21.0.8/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base@21.0.8/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base@21.0.8/java.util.ArrayList.forEach(ArrayList.java:1596)
+</failure>
+  </testcase>
+  <testcase name="testInsertMember()" classname="com.InsightMarket.repository.MemberRepositoryTests" time="0.984"/>
+  <system-out><![CDATA[14:25:51.628 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.InsightMarket.repository.MemberRepositoryTests]: MemberRepositoryTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+14:25:51.793 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.InsightMarket.InsightMarketApplication for test class com.InsightMarket.repository.MemberRepositoryTests
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.9)
+
+2025-12-24T14:25:52.293+09:00  INFO 5768 --- [InsightMarket] [    Test worker] c.I.repository.MemberRepositoryTests     : Starting MemberRepositoryTests using Java 21.0.8 with PID 5768 (started by EZEN in D:\InsightMarket\backend)
+2025-12-24T14:25:52.295+09:00  INFO 5768 --- [InsightMarket] [    Test worker] c.I.repository.MemberRepositoryTests     : No active profile set, falling back to 1 default profile: "default"
+2025-12-24T14:25:53.144+09:00  INFO 5768 --- [InsightMarket] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-24T14:25:53.243+09:00  INFO 5768 --- [InsightMarket] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 89 ms. Found 8 JPA repository interfaces.
+2025-12-24T14:25:54.072+09:00  INFO 5768 --- [InsightMarket] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-12-24T14:25:54.139+09:00  INFO 5768 --- [InsightMarket] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.39.Final
+2025-12-24T14:25:54.196+09:00  INFO 5768 --- [InsightMarket] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-12-24T14:25:54.589+09:00  INFO 5768 --- [InsightMarket] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-24T14:25:54.633+09:00  INFO 5768 --- [InsightMarket] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-12-24T14:25:54.766+09:00  INFO 5768 --- [InsightMarket] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.mariadb.jdbc.Connection@76ed7573
+2025-12-24T14:25:54.771+09:00  INFO 5768 --- [InsightMarket] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-12-24T14:25:54.850+09:00  INFO 5768 --- [InsightMarket] [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 11.8.3
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-12-24T14:25:56.154+09:00  INFO 5768 --- [InsightMarket] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table if exists brand_member 
+       modify column brand_role enum ('BRAND_ADMIN','MARKETER') not null
+Hibernate: 
+    alter table if exists files 
+       modify column target_type enum ('BOARD','COMMENT','SOLUTION') not null
+Hibernate: 
+    alter table if exists member 
+       modify column system_role enum ('ADMIN','COMPANY_ADMIN','USER') not null
+2025-12-24T14:25:56.325+09:00  INFO 5768 --- [InsightMarket] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-24T14:25:57.318+09:00  INFO 5768 --- [InsightMarket] [    Test worker] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-12-24T14:25:58.375+09:00  WARN 5768 --- [InsightMarket] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-12-24T14:25:58.415+09:00  INFO 5768 --- [InsightMarket] [    Test worker] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name memberUserDetailsService
+2025-12-24T14:25:58.480+09:00  INFO 5768 --- [InsightMarket] [    Test worker] c.InsightMarket.config.SecurityConfig    : ---------------------security config---------------------------
+2025-12-24T14:25:59.594+09:00  INFO 5768 --- [InsightMarket] [    Test worker] c.I.repository.MemberRepositoryTests     : Started MemberRepositoryTests in 7.592 seconds (process running for 8.939)
+Hibernate: 
+    select
+        m1_0.member_id,
+        c1_0.company_id,
+        c1_0.created_at,
+        c1_0.name,
+        c1_0.updated_at,
+        m1_0.created_at,
+        m1_0.email,
+        m1_0.is_approved,
+        m1_0.is_expired,
+        m1_0.is_social,
+        m1_0.name,
+        m1_0.password,
+        m1_0.system_role,
+        m1_0.updated_at 
+    from
+        member m1_0 
+    left join
+        company c1_0 
+            on c1_0.company_id=m1_0.company_id 
+    where
+        m1_0.email=?
+Hibernate: 
+    insert 
+    into
+        member
+        (company_id, created_at, email, is_approved, is_expired, is_social, name, password, system_role, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        member
+        (company_id, created_at, email, is_approved, is_expired, is_social, name, password, system_role, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        member
+        (company_id, created_at, email, is_approved, is_expired, is_social, name, password, system_role, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        member
+        (company_id, created_at, email, is_approved, is_expired, is_social, name, password, system_role, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        member
+        (company_id, created_at, email, is_approved, is_expired, is_social, name, password, system_role, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        member
+        (company_id, created_at, email, is_approved, is_expired, is_social, name, password, system_role, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        member
+        (company_id, created_at, email, is_approved, is_expired, is_social, name, password, system_role, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        member
+        (company_id, created_at, email, is_approved, is_expired, is_social, name, password, system_role, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        member
+        (company_id, created_at, email, is_approved, is_expired, is_social, name, password, system_role, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        member
+        (company_id, created_at, email, is_approved, is_expired, is_social, name, password, system_role, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+]]></system-out>
+  <system-err><![CDATA[Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (C:\Users\EZEN\.gradle\caches\modules-2\files-2.1\net.bytebuddy\byte-buddy-agent\1.17.8\f09415827a71be7ed621c7bd02550678f28bc81c\byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+]]></system-err>
+</testsuite>
